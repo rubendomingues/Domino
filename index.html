@@ -2,58 +2,66 @@
 <html lang = "en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" type="text/css" href="domino.css">
-  <script src = "domino.js"> </script>
-
   <title>DOMINÓ</title>
+  <link rel = "icon" href = "https://cdn.icon-icons.com/icons2/325/PNG/256/Letter-D-icon_34762.png" type = "image/x-icon">
 </head>
 <body>
-
   <!-- Título -->
   <div class="center">
-    <a href = "index.html"><img src="logo.png" id="logo" alt = "Domino Logo"></a>
+    <h1> Domino Game</h1>
   </div>
 
-  <!-- Left Box -->
-  <div id="leftContainer">
-    <div id = "loginContainer">
-      <form name = "login" method = "post">
-        Username:<input type = "text" name = "username" class = "textBoxes" />
-        Password:<input type = "password" name = "password" class = "textBoxes" />
-        <input id = "loginButton" type="submit" name="loginCheck" value="Log In"/>
-      </form>
-    </div>
-
-    <div id = "playMenu" style="display: none;">
-        <button id="button1x1" >1 vs 1</button>
-        <button id="button1xpc">1 vs PC</button>
-    </div>
-
-  </div>
   <div id = "logout" style = "display: none;">
-    <button id="buttonLogout">Logout</button>
-    <p id = "userLogout"> Bem-vindo, User </p>
+    <button id="buttonLogout" onclick = "logoutFunc();resetScores()">Logout</button>
+    <p id = "userLogout"> </p>
+  </div>
+
+  <div id = "loginContainer">
+    <form name = "login" method = "post">
+      <pre class = "loginText">Username:<input type = "text" name = "username" class = "textBoxes" id="user"/></pre>
+      <pre class = "loginText">Password:<input type = "password" name = "password" class = "textBoxes" id = "pass"/></pre>
+      <input id = "loginButton" type="button" name="loginCheck" value="Entrar " onclick = "loginFunc();getUser()" />
+    </form>
   </div>
 
   <div id = "gameBoard" style = "display: none;">
-    <div id = "board">
-      <h1  class = "centerGame" id = "demoo" > </h1>
-      <h1 id = "demooo" style = "display:none;"/h1>
-
-      <script src = "game.js">
-      </script>
+    <div id = "Dificulty">
+      <button class = "buttonDif" id = "easy" onclick="easyMode()"> EASY </button>
+      <button class = "buttonDif" id = "medium" onclick="mediumMode()"> MEDIUM </button>
+      <button class = "buttonDif" id = "hard" onclick="hardMode()"> HARD </button>
+    </div>
+    <button id = "startGame" style = "display: none" onclick = "start()"> START </button>
+    <div id = "board2" style = "display: none">
+      <div id="warnings"> </div>
+      <div id="PCHand"></div>
+      <div id="Board"></div>
+      <div id="PiecePos">
+        <button id = "left" onclick = "playpieceplayer('0')"> Left </button>
+        <button id = "right" onclick = "playpieceplayer('1')"> Right </button>
+      </div>
+      <div id="PlayerHand"></div>
+      <div id="Deck"></div>
     </div>
   </div>
 
+  <div id="leftContainer">
+    <div id = "playMenu" style="display: none;">
+        <button id="button1x1">1 vs 1</button>
+        <button id="button1xpc" onclick = "disappear()">1 vs PC</button>
+    </div>
+  </div>
   <!-- Right Box -->
   <div id="rightContainer">
-    <button id="buttonRules" onclick="rulesButton">Regras</button>
+    <button id="buttonRules" onclick="rulesButton()">Rules</button>
     <div id="myModal" class = "modal">
       <!-- Modal content -->
       <div class="modal-content">
         <span class="close">&times;</span>
-        <p id = "rulesTitle" class = "center">Regras</p>
-        <pre id = "rulesText">
+        <p id = "rulesTitle" class = "centerModal">Rules</p>
+        <pre class = "rulesText">
           Durante o jogo os jogadores jogam alternadamente.
           Peças jogadas formam uma fila.
           Cada nova peça é colocada numa das extremidades da fila.
@@ -72,23 +80,37 @@
         </pre>
       </div>
     </div>
-
-    <div id = "forfeit" style = "display:none;">
-      <button id = "giveUp"> Desistir </button>
+    <button id = "scores" onclick = "scoresButton();printScores()"> Scores </button>
+    <div id="myScores" class = "modal">
+      <!-- Modal content -->
+      <div class="modal-content">
+        <span class="close" >&times;</span>
+        <p class = "centerModal">HighScores</p>
+        <div id = "scoreTable">
+          <table>
+            <tr>
+              <th>USER</th>
+              <th>VICTORYS</th>
+              <th>SCORE</th>
+            </tr>
+            <tr>
+              <th id = "namePoints"> </th>
+              <th id = "victorys"> </th>
+              <th id = "valuePoints"> </th>
+            </tr>
+          </table>
+        </div>
+      </div>
     </div>
-
-    <script>
-      login();
-      disappear();
-      giveGame();
-      rulesButton();
+    <div id = "forfeit" style = "display:none;">
+      <button id = "giveUp" onclick="giveGame()"> GiveUp </button>
+      <button id = "buttonPass" style = "display:none" onclick = "passTurn()"> Passar </button>
+      <button id=  "buttonDeck" style = "display:none" onclick = "getDeck()"> Deck </button>
+    </div>
+    <script src = "teste.js">
     </script>
-  </div>
-
-  <!-- JOGO -->
-  <div>
 
   </div>
-
+  <script src = "domino.js"> </script>
 </body>
 </html>

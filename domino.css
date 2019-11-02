@@ -1,18 +1,17 @@
 /*  */
 body{
-  background-color: #008B8B;
+  background-image:url("https://cdn6.f-cdn.com/contestentries/1370548/19120511/5b4d43f5c58ce_thumb900.jpg");
 }
 
-#logo{
-  border-radius: 60px;
-  background-image:none;
-  height: 200px;
-  width: 260px;
+.centerModal{
+  text-align: center;
+  font-weight: bold;
+  font-size: 25px;
 }
-
 /* Align text to the center */
 .center{
   text-align: center;
+  color: white;
 }
 
 #rulesTitle{
@@ -20,20 +19,8 @@ body{
   font-size: 25px;
 }
 
-#rulesText{
+.rulesText{
   font-size: 15px;
-}
-
-/* Left box */
-#leftContainer {
-   float:left;
-   border-radius: 25px;
-   background-color: white;
-   height: 280px;
-   width: 150px;
-   border: 5px solid #008B8B;
-   padding: 50px;
-   margin: 20px;
 }
 
 .textBoxes{
@@ -41,30 +28,33 @@ body{
   height: 15px;
   width: 120px;
 }
+
+#warnings{
+  color:white;
+  text-align: center;
+}
 /* Right box */
 #rightContainer {
    float:right;
-   border-radius: 25px;
-   background-color: white;
+   background-color: Transparent;
+   border: none;
    height: 280px;
-   width: 150px;
-   border: 5px solid #008B8B;
+   width: 100px;
    padding: 50px;
-   margin: 20px;
+   margin-top: 100px;
 }
 
 /* Rules button */
 #buttonRules {
-  background-color: #008B8B;
-  border-radius: 10px;
+  background-color: Transparent;
   border: none;
   color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
+  height: 50px;
+  width: 110px;
   display: inline-block;
-  font-size: 16px;
-  margin: 23px;
+  justify-content: center;
+  align-content: center;
+  font-size: 24px;
   cursor: pointer;
 }
 
@@ -73,12 +63,14 @@ body{
   display: none; /* Hidden by default */
   position: fixed; /* Stay in place */
   z-index: 1; /* Sit on top */
-  padding-top: 100px; /* Location of the box */
   left: 0;
   top: 0;
   width: 100%; /* Full width */
   height: 100%; /* Full height */
   overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0,0,0); /* Fallback color */
+  background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  padding-top: 60px;
 }
 
 /* Modal Content/Box */
@@ -96,44 +88,55 @@ body{
   float: right;
   font-size: 28px;
   font-weight: bold;
+  cursor:pointer;
 }
 
 /* 1x1 button */
 #button1x1 {
-  background-color: #008B8B;
-  border-radius: 10px;
+  background-image: url("https://image.freepik.com/free-vector/circuit-board-background-flat-style_52683-15669.jpg");
   border: none;
+  border-radius: 10%;
   color: white;
-  height: 80px;
-  width: 120px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 16px;
+  height: 100px;
+  width: 160px;
+  float:left;
+  font-size: 24px;
+  margin-top: 200px;
+  margin-left: 300px;
   cursor: pointer;
 }
 
 /* 1xpc button */
 #button1xpc {
-  background-color: #008B8B;
-  border-radius: 10px;
+  background-image: url("https://image.freepik.com/free-vector/circuit-board-background-flat-style_52683-15669.jpg");
   border: none;
+  border-radius: 10%;
   color: white;
-  height: 80px;
-  width: 120px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 16px;
+  height: 100px;
+  width: 160px;
+  float:left;
+  font-size: 24px;
+  margin-top: 200px;
+  margin-left: 300px;
   cursor: pointer;
 }
-
+/* botao de passar */
+#buttonPass{
+  background-color: Transparent;
+  border: none;
+  color: white;
+  height: 50px;
+  width: 110px;
+  display: inline-block;
+  justify-content: center;
+  align-content: center;
+  font-size: 24px;
+  margin-top: 10px;
+  cursor: pointer;
+}
 /* logout button */
 #buttonLogout {
-  background-color: #008B8B;
-  border-radius: 10px;
+  background-color: Transparent;
   border: none;
   color: white;
   height: 25px;
@@ -148,6 +151,10 @@ body{
   cursor: pointer;
 }
 
+#loginButton{
+  float:right;
+}
+
 /* username on logout */
 #userLogout {
   color:#FFFFFF;
@@ -157,33 +164,178 @@ body{
   right:10px;
 }
 
-#board{
+.pecaPlayer{
+  cursor:pointer;
+  color : white;
+}
+/*tabuleiro*/
+#gameBoard{
   float:left;
-  background-color: white;
-  height: 300px;
-  width: 800px;
-  border: 5px solid #008B8B;
-  padding: 40px;
+  background: url("https://images.pexels.com/photos/326311/pexels-photo-326311.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  border-radius: 8px;
+  height: 520px;
+  width: 991px;
   margin: 20px;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  overflow-x:auto;
+  overflow-y:hidden;
+}
+/* onde as peças sao jogadas */
+#Board{
+  font-size: 400%;
+  display:block;
+  text-align: center;
+  margin-top:10%;
+  color:white;
+  white-space: nowrap;
+}
+/* mao do jogador */
+#PlayerHand {
+  visibility: visible;
+  text-align: center;
+  font-size: 60px;
+  margin-top: 1%;
+  color:white;
+}
+/* div dos botoes esq / dir */
+#PiecePos{
+    margin-top: 10%;
+    visibility: visible;
 }
 
-.centerGame{
-  float: center;
-  padding: 220px;
+/* botao jogar esq */
+#left{
+  color:white;
+  font-size: 10px;
+  background-color: black;
+  margin-left: 45%;
+  visibility: hidden;
 }
-
-#giveUp{
-  background-color: #008B8B;
-  border-radius: 10px;
+/* botao jogar dir */
+#right{
+  color:white;
+  font-size: 10px;
+  background-color: black;
+  visibility: hidden;
+}
+/* botoes das dificuldades */
+.buttonDif{
+  background: none;
+  color: white;
+  border: none;
+  font-size:32px;
+  cursor: pointer;
+  margin-top: 25%;
+  margin-left: 15%;
+}
+/* mao do pc */
+#PCHand {
+  visibility: visible;
+  text-align: center;
+  display:block;
+  font-size: 60px;
+  margin-top: 0%;
+  color:white;
+}
+/* baralho */
+#Deck {
+  margin-top: 0%;
+  display:block;
+  float: right;
+  font-size: 150%;
+  color:white;
+}
+/*centrar jogo player */
+.centerGamePlayer{
+  text-align: center;
+  font-size: 60px;
+  margin-top: 15%;
+  color:white;
+}
+/* centrar jogo pc */
+.centerGamePc{
+  text-align: center;
+  font-size: 60px;
+  margin: 0;
+  color:white;
+}
+/* botao do baralho */
+#buttonDeck{
+  background-color: Transparent;
   border: none;
   color: white;
-  padding: 15px 32px;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 16px;
-  margin: 23px;
+  height: 50px;
+  width: 110px;
+  margin-right: 10%;
+  margin-top: 5%;
+  font-size: 24px;
   cursor: pointer;
+}
+/* botao start */
+#startGame{
+  background-color: Transparent;
+  color:white;
+  border:none;
+  height: 80px;
+  width: 160px;
+  font-size: 300%;
+  cursor:pointer;
+  margin-top: 20%;
+  margin-left: 40%;
+}
+/*botao desistir */
+#giveUp{
+  background-color: Transparent;
+  border: none;
+  color: white;
+  height: 50px;
+  width: 110px;
+  display: inline-block;
+  justify-content: center;
+  align-content: center;
+  font-size: 24px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+/* botao scores */
+#scores{
+  background-color: Transparent;
+  border: none;
+  color: white;
+  height: 50px;
+  width: 110px;
+  display: inline-block;
+  justify-content: center;
+  align-content: center;
+  font-size: 24px;
+  margin-top: 10px;
+  cursor: pointer;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: center;
+  padding: 8px;
+}
+
+#loginContainer{
+  position:absolute;
+  top:0%;
+  right:2%;
+}
+
+.loginText{
+  color:white;
+}
+
+.centerDeck{
+  text-align: center;
+  font-size: 60px;
+  margin-top: 14%;
+  color:white;
 }
