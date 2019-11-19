@@ -14,7 +14,7 @@
     <h1> Domino Game</h1>
   </div>
 
-  <div id = "logout" style = "display: none;">
+  <div id = "logout" >
     <button id="buttonLogout" onclick = "logoutFunc();resetScores()">Logout</button>
     <p id = "userLogout"> </p>
   </div>
@@ -27,14 +27,14 @@
     </form>
   </div>
 
-  <div id = "gameBoard" style = "display: none;">
+  <div id = "gameBoard">
     <div id = "Dificulty">
       <button class = "buttonDif" id = "easy" onclick="easyMode()"> EASY </button>
       <button class = "buttonDif" id = "medium" onclick="mediumMode()"> MEDIUM </button>
       <button class = "buttonDif" id = "hard" onclick="hardMode()"> HARD </button>
     </div>
-    <button id = "startGame" style = "display: none" onclick = "start()"> START </button>
-    <div id = "board2" style = "display: none">
+    <button id = "startGame" onclick = "start()"> START </button>
+    <div id = "board2">
       <div id="warnings"> </div>
       <div id="PCHand"></div>
       <div id="Board"></div>
@@ -48,7 +48,7 @@
   </div>
 
   <div id="leftContainer">
-    <div id = "playMenu" style="display: none;">
+    <div id = "playMenu">
         <button id="button1x1">1 vs 1</button>
         <button id="button1xpc" onclick = "disappear()">1 vs PC</button>
     </div>
@@ -102,10 +102,10 @@
         </div>
       </div>
     </div>
-    <div id = "forfeit" style = "display:none;">
+    <div id = "forfeit" >
       <button id = "giveUp" onclick="giveGame()"> GiveUp </button>
-      <button id = "buttonPass" style = "display:none" onclick = "passTurn()"> Passar </button>
-      <button id=  "buttonDeck" style = "display:none" onclick = "getDeck()"> Deck </button>
+      <button id = "buttonPass" onclick = "passTurn()"> Passar </button>
+      <button id=  "buttonDeck" onclick = "getDeck()"> Deck </button>
     </div>
     <script src = "teste.js">
     </script>
