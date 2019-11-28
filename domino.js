@@ -124,14 +124,18 @@ function displayGame(){
   document.getElementById("Deck").innerHTML="";
 }
 
-function fillScores(s){
+function fillScores(info){
   var player = "player";
   var wins = "wins";
   var games = "games";
-
-  for(var i=0; i<s.length; i++){
+  info = info.ranking;
+  for(var i=0; i<info.length; i++){
     var temp = player +""+i+"";
-    document.getElementById(player+)
+    document.getElementById(temp).innerHTML = info[i].nick;
+    temp = wins+""+i+"";
+    document.getElementById(temp).innerHTML = info[i].victories;
+    temp = games+""+i+"";
+    document.getElementById(temp).innerHTML = info[i].games;
   }
 }
 //SERVER CONNECTION
@@ -227,7 +231,7 @@ function getRanking(){
     return r.json();
   })
   .then(function (t){
-    console.log(t);
+    fillScores(t);
   });
 }
 
