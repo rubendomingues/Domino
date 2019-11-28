@@ -294,12 +294,14 @@ function notifyServerSkip(){
   });
 }
 //Update
+var eventSource;
 function update(){
-
-  game = {
-    game : gameId,
-    nick : username,
-  }
+    let urltemp = url + "update?game=" + gameId + "&nick=" + username;
+    eventSource = new EventSource(encodeURI(urltemp));
+    eventSource.onmessage = function(event){
+      const data = JSON.parse(event.data);
+      console.log(data.board);
+    }
 
 }
 //-----------------
