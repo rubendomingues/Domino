@@ -15,7 +15,7 @@
   </div>
 
   <div id = "logout" >
-    <button id="buttonLogout" onclick = "logoutFunc();resetScores()">Logout</button>
+    <button id="buttonLogout" >Logout</button>
     <p id = "userLogout"> </p>
   </div>
 
@@ -23,24 +23,24 @@
     <form name = "login" method = "post">
       <pre class = "loginText">Username:<input type = "text" name = "username" class = "textBoxes" id="user"/></pre>
       <pre class = "loginText">Password:<input type = "password" name = "password" class = "textBoxes" id = "pass"/></pre>
-      <input id = "loginButton" type="button" name="loginCheck" value="Entrar " onclick = "loginFunc();getUser()" />
+      <input id = "loginButton" type="button" name="loginCheck" value="Entrar " />
     </form>
   </div>
 
   <div id = "gameBoard">
     <div id = "Dificulty">
-      <button class = "buttonDif" id = "easy" onclick="easyMode()"> EASY </button>
-      <button class = "buttonDif" id = "medium" onclick="mediumMode()"> MEDIUM </button>
-      <button class = "buttonDif" id = "hard" onclick="hardMode()"> HARD </button>
+      <button class = "buttonDif" id = "easy"> EASY </button>
+      <button class = "buttonDif" id = "medium"> MEDIUM </button>
+      <button class = "buttonDif" id = "hard"> HARD </button>
     </div>
-    <button id = "startGame" onclick = "start()"> START </button>
+    <button id = "startGame"> START </button>
     <div id = "board2">
       <div id="warnings"> </div>
       <div id="PCHand"></div>
       <div id="Board"></div>
       <div id="PiecePos">
-        <button id = "left" onclick = "playpieceplayer('0')"> Left </button>
-        <button id = "right" onclick = "playpieceplayer('1')"> Right </button>
+        <button id = "left" > Left </button>
+        <button id = "right" > Right </button>
       </div>
       <div id="PlayerHand"></div>
       <div id="Deck"></div>
@@ -50,12 +50,12 @@
   <div id="leftContainer">
     <div id = "playMenu">
         <button id="button1x1">1 vs 1</button>
-        <button id="button1xpc" onclick = "disappear()">1 vs PC</button>
+        <button id="button1xpc">1 vs PC</button>
     </div>
   </div>
   <!-- Right Box -->
   <div id="rightContainer">
-    <button id="buttonRules" onclick="rulesButton()">Rules</button>
+    <button id="buttonRules" >Rules</button>
     <div id="myModal" class = "modal">
       <!-- Modal content -->
       <div class="modal-content">
@@ -80,7 +80,7 @@
         </pre>
       </div>
     </div>
-    <button id = "scores" onclick = "scoresButton();printScores()"> Scores </button>
+    <button id = "scores" > Scores </button>
     <div id="myScores" class = "modal">
       <!-- Modal content -->
       <div class="modal-content">
@@ -91,21 +91,66 @@
             <tr>
               <th>USER</th>
               <th>VICTORYS</th>
-              <th>SCORE</th>
+              <th>GAMES</th>
             </tr>
             <tr>
-              <th id = "namePoints"> </th>
-              <th id = "victorys"> </th>
-              <th id = "valuePoints"> </th>
+              <th id = "player0"> </th>
+              <th id = "wins0"> </th>
+              <th id = "games0"> </th>
+            </tr>
+            <tr>
+              <th id = "player1"> </th>
+              <th id = "wins1"> </th>
+              <th id = "games1"> </th>
+            </tr>
+            <tr>
+              <th id = "player2"> </th>
+              <th id = "wins2"> </th>
+              <th id = "games2"> </th>
+            </tr>
+            <tr>
+              <th id = "player3"> </th>
+              <th id = "wins3"> </th>
+              <th id = "games3"> </th>
+            </tr>
+            <tr>
+              <th id = "player4"> </th>
+              <th id = "wins4"> </th>
+              <th id = "games4"> </th>
+            </tr>
+            <tr>
+              <th id = "player5"> </th>
+              <th id = "wins5"> </th>
+              <th id = "games5"> </th>
+            </tr>
+            <tr>
+              <th id = "player6"> </th>
+              <th id = "wins6"> </th>
+              <th id = "games6"> </th>
+            </tr>
+            <tr>
+              <th id = "player7"> </th>
+              <th id = "wins7"> </th>
+              <th id = "games7"> </th>
+            </tr>
+            <tr>
+              <th id = "player8"> </th>
+              <th id = "wins8"> </th>
+              <th id = "games8"> </th>
+            </tr>
+            <tr>
+              <th id = "player9"> </th>
+              <th id = "wins9"> </th>
+              <th id = "games9"> </th>
             </tr>
           </table>
         </div>
       </div>
     </div>
     <div id = "forfeit" >
-      <button id = "giveUp" onclick="giveGame()"> GiveUp </button>
-      <button id = "buttonPass" onclick = "passTurn()"> Passar </button>
-      <button id=  "buttonDeck" onclick = "getDeck()"> Deck </button>
+      <button id = "giveUp"> GiveUp </button>
+      <button id = "buttonPass"> Passar </button>
+      <button id=  "buttonDeck" > Deck </button>
     </div>
     <script src = "teste.js">
     </script>

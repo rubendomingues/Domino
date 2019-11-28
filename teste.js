@@ -4,6 +4,7 @@ class Piece {
     this.right = right;
   }
 };
+
 class play{
   constructor(pos,sidepiece,sideboard) {
   	this.pos=pos;
@@ -18,40 +19,47 @@ var userValue = "";
 
 var onclickpiece;
 var dif = 0;
-function easyMode(){
+
+//easyMode
+document.getElementById("easy").addEventListener("click",function easyMode(){
   document.getElementById("startGame").style.display="block";
   document.getElementById("Dificulty").style.display="none";
   dif=1;
-}
-function mediumMode(){
+});
+
+//mediumMode
+document.getElementById("medium").addEventListener("click",function mediumMode(){
   document.getElementById("startGame").style.display="block";
   document.getElementById("Dificulty").style.display="none";
 
   dif=2;
-}
-function hardMode(){
+});
+
+//hardMode
+document.getElementById("hard").addEventListener("click",function hardMode(){
   document.getElementById("startGame").style.display="block";
   document.getElementById("Dificulty").style.display="none";
 
   dif=3;
-}
+});
 
-function getUser(){
+document.getElementById("loginButton").addEventListener("click",function getUser(){
   var user = document.getElementById("user");
   userValue = user.value;
-}
+});
 
-function resetScores(){
-  userPoints = 0;
-  userVitorys = 0;
-  userValue = "";
-}
+// //RESET SCORES
+// document.getElementById("buttonLogout").addEventListener("click",function resetScores(){
+//   userPoints = 0;
+//   userVitorys = 0;
+//   userValue = "";
+// });
 
-function printScores(){
-    document.getElementById("namePoints").innerHTML = userValue;
-    document.getElementById("victorys").innerHTML = String(userVitorys);
-    document.getElementById("valuePoints").innerHTML = String(userPoints);
-}
+// document.getElementById("scores").addEventListener("click",function printScores(){
+//     document.getElementById("namePoints").innerHTML = userValue;
+//     document.getElementById("victorys").innerHTML = String(userVitorys);
+//     document.getElementById("valuePoints").innerHTML = String(userPoints);
+// });
 
 var giveUp = document.getElementById("forfeit");
 var menu = document.getElementById("playMenu");
@@ -98,13 +106,24 @@ function remove(idpiece){
 	}
   	document.getElementById(filhos[i].id).style.color = "green";
   onclickpiece=i;
+  var flag = 0;
+  var flag2 = 0;
   if(checkleftp(mypieces[onclickpiece],tabu[0].left)!==-1){
     document.getElementById("left").style.visibility ="visible";
+    flag++;
+    flag2 = 1;
   }
   if(checkrightp(mypieces[onclickpiece],tabu[tabu.length-1].right)!==-1){
     document.getElementById("right").style.visibility = "visible";
+    flag++;
+    flag2 = 2;
   }
 
+  // if(flag==1){
+  //   //butoes invisiveis
+  // }
+  // else{
+  // }
 }
 var l=-1,r=-1;
 var max=0;
@@ -121,7 +140,7 @@ function myFunction(item,index) {
   }
 }
 //começar o jogo
-function start(){
+document.getElementById("startGame").addEventListener("click",function start(){
 document.getElementById("startGame").style.display="none";
 document.getElementById("board2").style.display ="block";
 document.getElementById("forfeit").style.display = "block";
@@ -131,6 +150,7 @@ document.getElementById("PlayerHand").innerHTML="";
 document.getElementById("Deck").innerHTML="";
 
   reset();
+  console.log(mypieces);
   l=-1,r=-1;
   max=0;
   pos=-1;
@@ -173,7 +193,7 @@ else {
 	chekarHand();
 }
 
-}
+});
 // resetar o jogo
 function reset(){
   array.length=28;
@@ -501,8 +521,9 @@ function playpiecepc(posi,sidepi,sideb){
 }
 
 
-//jogar peça do jogador
-function playpieceplayer(sideb){
+//jogar peça do jogador -> ESQUERDA
+document.getElementById("left").addEventListener("click",function playpieceplayer(){
+  var sideb = 0;
 	var filhos;
 	var board=document.getElementById("Board");
 	filhos=document.getElementById("PlayerHand").childNodes;
@@ -531,7 +552,41 @@ function playpieceplayer(sideb){
   document.getElementById("right").style.visibility = "hidden";
   document.getElementById("warnings").innerHTML = "PC TURN";
   setTimeout(PCturn,1000);
-}
+});
+//jogar peça jogador -> DIREITA
+//jogar peça do jogador
+document.getElementById("right").addEventListener("click",function playpieceplayer(){
+  var sideb = 1;
+	var filhos;
+	var board=document.getElementById("Board");
+	filhos=document.getElementById("PlayerHand").childNodes;
+	var change=filhos[onclickpiece];
+	var span=document.createElement("span");
+	var sidepi;
+	if(sideb==0){
+		if(tabu[0].left===mypieces[onclickpiece].left)
+			sidepi=0;
+		else sidepi=1;
+	}
+	if(sideb==1){
+		if(tabu[tabu.length-1].right===mypieces[onclickpiece].left)
+			sidepi=0;
+		else sidepi=1;
+	}
+	var conta=127025+valuepiece(mypieces,onclickpiece,sidepi,sideb);
+	var change=filhos[onclickpiece];
+	span.innerHTML="&#"+conta;
+	document.getElementById("PlayerHand").removeChild(change);
+	if(sideb==0) board.insertBefore(span,board.childNodes[0]);
+	else board.appendChild(span);
+	mypieces.splice(onclickpiece, 1);
+  bool=1;
+  document.getElementById("left").style.visibility = "hidden";
+  document.getElementById("right").style.visibility = "hidden";
+  document.getElementById("warnings").innerHTML = "PC TURN";
+  setTimeout(PCturn,1000);
+});
+
 //calcular valor da peça
 function valuepiece(arr,pi,sp,sb){
 	var conta=0;
@@ -594,7 +649,7 @@ function checkrightp(test,r){
 	return -1;
 }
 //buscar peça do baralho
-function getDeck(){
+document.getElementById("buttonDeck").addEventListener("click",function getDeck(){
   var newpiece = Math.floor(Math.random() * array.length);
   var peçafora =array[newpiece];
   array.splice(newpiece,1);
@@ -620,7 +675,7 @@ function getDeck(){
   else {
     chekarHand();
   }
-}
+});
 //verifica se pode jogar, se tem de ir buscar ao baralho ou se tem de passar
 function chekarHand(){
   if(check(mypieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1 && array.length === 0){
@@ -640,7 +695,7 @@ function chekarHand(){
 
 }
 //passar a vez
-function passTurn(){
+document.getElementById("buttonPass").addEventListener("click",function passTurn(){
   document.getElementById("buttonPass").style.display = "none";
   PCturn();
-}
+});
