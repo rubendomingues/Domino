@@ -106,24 +106,13 @@ function remove(idpiece){
 	}
   	document.getElementById(filhos[i].id).style.color = "green";
   onclickpiece=i;
-  var flag = 0;
-  var flag2 = 0;
   if(checkleftp(mypieces[onclickpiece],tabu[0].left)!==-1){
     document.getElementById("left").style.visibility ="visible";
-    flag++;
-    flag2 = 1;
   }
   if(checkrightp(mypieces[onclickpiece],tabu[tabu.length-1].right)!==-1){
     document.getElementById("right").style.visibility = "visible";
-    flag++;
-    flag2 = 2;
   }
 
-  // if(flag==1){
-  //   //butoes invisiveis
-  // }
-  // else{
-  // }
 }
 var l=-1,r=-1;
 var max=0;

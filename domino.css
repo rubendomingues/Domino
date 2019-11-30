@@ -216,6 +216,21 @@ body{
 }
 
 /* botao jogar esq */
+#leftp{
+  color:white;
+  font-size: 10px;
+  background-color: black;
+  margin-left: 45%;
+  visibility: hidden;
+}
+
+#rightp{
+  color:white;
+  font-size: 10px;
+  background-color: black;
+  visibility: hidden;
+}
+
 #left{
   color:white;
   font-size: 10px;

@@ -23,7 +23,7 @@
     <form name = "login" method = "post">
       <pre class = "loginText">Username:<input type = "text" name = "username" class = "textBoxes" id="user"/></pre>
       <pre class = "loginText">Password:<input type = "password" name = "password" class = "textBoxes" id = "pass"/></pre>
-      <input id = "loginButton" type="button" name="loginCheck" value="Entrar " />
+      <input id = "loginButton" type="button" name="loginCheck" value="Log In " />
     </form>
   </div>
 
@@ -39,6 +39,8 @@
       <div id="PCHand"></div>
       <div id="Board"></div>
       <div id="PiecePos">
+        <button id = "leftp"> left </button>
+        <button id = "rightp"> right </button>
         <button id = "left" > Left </button>
         <button id = "right" > Right </button>
       </div>
@@ -80,69 +82,14 @@
         </pre>
       </div>
     </div>
-    <button id = "scores" > Scores </button>
+    <button id = "scores" > Scores Online </button>
     <div id="myScores" class = "modal">
       <!-- Modal content -->
       <div class="modal-content">
         <span class="close" >&times;</span>
         <p class = "centerModal">HighScores</p>
         <div id = "scoreTable">
-          <table>
-            <tr>
-              <th>USER</th>
-              <th>VICTORYS</th>
-              <th>GAMES</th>
-            </tr>
-            <tr>
-              <th id = "player0"> </th>
-              <th id = "wins0"> </th>
-              <th id = "games0"> </th>
-            </tr>
-            <tr>
-              <th id = "player1"> </th>
-              <th id = "wins1"> </th>
-              <th id = "games1"> </th>
-            </tr>
-            <tr>
-              <th id = "player2"> </th>
-              <th id = "wins2"> </th>
-              <th id = "games2"> </th>
-            </tr>
-            <tr>
-              <th id = "player3"> </th>
-              <th id = "wins3"> </th>
-              <th id = "games3"> </th>
-            </tr>
-            <tr>
-              <th id = "player4"> </th>
-              <th id = "wins4"> </th>
-              <th id = "games4"> </th>
-            </tr>
-            <tr>
-              <th id = "player5"> </th>
-              <th id = "wins5"> </th>
-              <th id = "games5"> </th>
-            </tr>
-            <tr>
-              <th id = "player6"> </th>
-              <th id = "wins6"> </th>
-              <th id = "games6"> </th>
-            </tr>
-            <tr>
-              <th id = "player7"> </th>
-              <th id = "wins7"> </th>
-              <th id = "games7"> </th>
-            </tr>
-            <tr>
-              <th id = "player8"> </th>
-              <th id = "wins8"> </th>
-              <th id = "games8"> </th>
-            </tr>
-            <tr>
-              <th id = "player9"> </th>
-              <th id = "wins9"> </th>
-              <th id = "games9"> </th>
-            </tr>
+          <table id ="tableinfo">
           </table>
         </div>
       </div>
