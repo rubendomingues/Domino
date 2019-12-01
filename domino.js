@@ -228,6 +228,10 @@ function loginServer(){
       document.getElementById("playMenu").style.display = "block";
       document.getElementById("logout").style.display = "block";
     }
+  })
+  .catch(function (error){
+    console.log(error);
+    return;
   });
 }
 
@@ -248,9 +252,18 @@ function joinGame(){
   })
   .then(function (t){
     gameId = t.game;
+    if(t.hand == null){
+      leaveGame();
+      joinGame();
+      return;
+    }
     atualizaHand(t.hand);
     displayGame();
     startGame();
+  })
+  .catch(function (error){
+    console.log(error);
+    return;
   });
 }
 
@@ -271,6 +284,10 @@ function leaveGame(){
   })
   .then(function (t){
     return t;
+  })
+  .catch(function (error){
+    console.log(error);
+    return;
   });
 }
 
@@ -285,6 +302,10 @@ function getRanking(){
   })
   .then(function (t){
     fillScores(t);
+  })
+  .catch(function (error){
+    console.log(error);
+    return;
   });
 }
 
@@ -306,11 +327,17 @@ function notifyAskPiece(){
   })
   .then(function (t){
     givePiecep(t.piece);
+  })
+  .catch(function (error){
+    console.log(error);
+    return;
   });
 }
 
 //NOTIFY SERVER TO PLAY
 function notifyServerPlay(piece,side){
+  countu=0;
+
   game = {
     nick : username,
     pass : password,
@@ -328,11 +355,19 @@ function notifyServerPlay(piece,side){
   })
   .then(function (t){
     return t;
+  })
+  .catch(function (error){
+    console.log(error);
+    return;
   });
 }
 
 //NOTIFY SERVER TO SKIP
 function notifyServerSkip(){
+  //DRAWAPAGAR ( APAGAR CASO DUARTE NAO CONSIGA)
+  countu++;
+
+  //----------------------------------------------
   game = {
     nick : username,
     pass : password,
@@ -347,7 +382,17 @@ function notifyServerSkip(){
     return r.text();
   })
   .then(function (t){
+    if(countu==2){
+      window.alert("draw");
+      leaveGame();
+      eventDisap();
+      eventSource.close();
+    }
     return t;
+  })
+  .catch(function (error){
+    console.log(error);
+    return;
   });
 }
 
@@ -362,6 +407,7 @@ function update(){
     eventSource.onmessage = function(event){
       const data = JSON.parse(event.data);
       if(data.winner !== undefined){
+        document.getElementById("warnings").innerHTML = "";
         window.alert(data.winner + " win");
         if(data.winner===username && flag2===0)
           eventDisap();
@@ -369,29 +415,76 @@ function update(){
           eventDisap();
         leaveGame();
         eventSource.close();
+        return;
       }
       else{
-      for(let i in data.board.count){
-        if(i===username && data.board.count[i]!=mypieces.length)
-          return;
+        if(data.board.line.length===0 && data.turn===username && mypieces.length!==0){
+          var filhos=playerH.childNodes;
+          pos=-1;
+          maxpiece=0;
+          mypieces.forEach(myFunction);
+          var a=[mypieces[pos].left,mypieces[pos].right];
+          playerH.removeChild(filhos[pos]);
+          mypieces.splice(pos,1);
+          pos=-1;
+          maxpiece=0;
+          notifyServerPlay(a,"start");
+        return;
       }
-
+      for(let i in data.board.count){
+        if(i===username && data.board.count[i]!==mypieces.length){
+          document.getElementById("Deck").innerHTML = "";
+          for(var j=0; j<data.board.stock; j++){
+            document.getElementById("Deck").innerHTML+= "&#127074";
+          }
+          return;
+        }
+      }
       if(data === undefined){
         tabu = [];
       }
       else if(data !== undefined && data.board !== undefined){
+        //DRAWAPAGAR ( APAGAR CASO DUARTE NAO CONSIGA)
+        if(data.turn===username){
+          if(tabu.length===data.board.line.length){
+            countu++;
+            if(countu===2){
+              window.alert("DRAW!");
+              leaveGame();
+              eventDisap();
+              eventSource.close();
+              return;
+            }
+          }
+          else countu=0;
+        }
+        //-------------------------------
         tabu = data.board.line;
         turn = data.turn;
         deckL = data.board.stock;
         updateTab();
         checkPass();
-      }}
+      }
+    }
 
   }
 }
 
 //-----------------
 //PLAYER VS PLAYER ALGORITHM
+document.getElementById("onlineDeck").addEventListener("click",function(){
+  document.getElementById("onlineDeck").disabled = true;
+  document.getElementById("onlineDeck").style.display = "none";
+  notifyAskPiece();
+});
+
+document.getElementById("onlinePass").addEventListener("click",function(){
+  document.getElementById("warnings").innerHTML = "Turn Passed, "+ turn+ " turn";
+  document.getElementById("onlinePass").disabled = true;
+  document.getElementById("onlinePass").style.display = "none";
+  notifyServerSkip();
+});
+
 var board = document.getElementById("Board");
 var playerH = document.getElementById("PlayerHand");
 var pcH = document.getElementById("PCHand");
@@ -401,6 +494,14 @@ var mypieces = [];
 var tabu = [];
 
 function givePiecep(pieceG){
+  if(pieceG === null){
+    document.getElementById("warnings").innerHTML = "Turn Passed, "+ turn+ " turn";
+    document.getElementById("onlineDeck").disabled = true;
+    document.getElementById("onlineDeck").style.display = "none";
+    document.getElementById("onlinePass").disabled = false;
+    document.getElementById("onlinePass").style.display = "block";
+    return;
+  }
   mypieces.push(new Piece(pieceG[0],pieceG[1]));
   var p=document.createElement("span");
   var conta = 127025 + mypieces[mypieces.length-1].left*7 + mypieces[mypieces.length-1].right+50;
@@ -421,12 +522,14 @@ function checkPass(){
     return;
   }
   if(check(mypieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1 &&  deckL === 0 && turn === username){
-    document.getElementById("warnings").innerHTML = "Turn Passed, "+ turn+ " turn";
-    notifyServerSkip();
+    document.getElementById("onlinePass").disabled = false;
+    document.getElementById("onlinePass").style.display = "block";
+
   }
   else if(check(mypieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1 &&  deckL !== 0 && turn ===username ){
     document.getElementById("warnings").innerHTML = turn+ " turn";
-    notifyAskPiece();
+    document.getElementById("onlineDeck").disabled = false;
+    document.getElementById("onlineDeck").style.display = "block";
   }
   else{
     document.getElementById("warnings").innerHTML = turn+ " turn";
@@ -436,16 +539,14 @@ function checkPass(){
 
 function updateTab(){
   board.innerHTML = "";
+  var temp = tabu;
   document.getElementById("Deck").innerHTML = "";
   for(var i=0; i<deckL; i++){
     document.getElementById("Deck").innerHTML+= "&#127074";
   }
-  var temp = tabu;
   for(var i=0; i<tabu.length; i++){
     tabu[i] = new Piece(temp[i][0],temp[i][1]);
   }
-//[[1,2],[3,4]]
-//[(1,2),(3,4)] -> (1,2) == new Piece(left,right)
   document.getElementById("PCHand").innerHTML = "";
   for(var i=0; i<(28-tabu.length-deckL-mypieces.length); i++){
     document.getElementById("PCHand").innerHTML += "&#127074";
@@ -486,7 +587,9 @@ function startGame(){
 function removeP(idpiece){
   document.getElementById("leftp").style.visibility = "hidden";
   document.getElementById("rightp").style.visibility = "hidden";
-  if(turn !== username) return;
+  if(turn !== username){
+    return;
+  }
 	var filhos;
 	var board=document.getElementById("Board");
 	filhos=document.getElementById("PlayerHand").childNodes;
@@ -500,20 +603,6 @@ function removeP(idpiece){
 		}
 	}
 	var change=filhos[i];
-  if(tabu.length===0){
-  		pos=-1;
-  		maxpiece=0;
-  		mypieces.forEach(myFunction);
-  		if(i==pos){
-  			var board=document.getElementById("Board");
-  			// board.appendChild(change);
-  			var a=[mypieces[i].left,mypieces[i].right];
-        playerH.removeChild(change);
-        mypieces.splice(i,1);
-  			notifyServerPlay(a,"start");
-  		}
-  		return;
-  	}
 	var test=jogada2(mypieces[i],tabu[0].left,tabu[tabu.length-1].right);
 	if(test.pos===-1){
     document.getElementById("warnings").innerHTML = "Can't play piece";

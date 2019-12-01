@@ -13,13 +13,10 @@ class play{
   }
 };
 
-var userVitorys = 0;
-var userPoints = 0;
-var userValue = "";
 
 var onclickpiece;
 var dif = 0;
-
+var pcMode = 0;
 //easyMode
 document.getElementById("easy").addEventListener("click",function easyMode(){
   document.getElementById("startGame").style.display="block";
@@ -42,24 +39,118 @@ document.getElementById("hard").addEventListener("click",function hardMode(){
 
   dif=3;
 });
-
+var userValue = "";
 document.getElementById("loginButton").addEventListener("click",function getUser(){
   var user = document.getElementById("user");
   userValue = user.value;
+  pcMode = 0;
+  logoutLoose = 0;
 });
 
-// //RESET SCORES
-// document.getElementById("buttonLogout").addEventListener("click",function resetScores(){
-//   userPoints = 0;
-//   userVitorys = 0;
-//   userValue = "";
-// });
+document.getElementById("giveUp").addEventListener("click",function(){
+  if(pcMode!==0){
+    setTimeout(PCWin,500);
+    pcMode = 0;
+  }
+});
 
-// document.getElementById("scores").addEventListener("click",function printScores(){
-//     document.getElementById("namePoints").innerHTML = userValue;
-//     document.getElementById("victorys").innerHTML = String(userVitorys);
-//     document.getElementById("valuePoints").innerHTML = String(userPoints);
-// });
+document.getElementById("button1xpc").addEventListener("click",function(){
+  pcMode=1;
+});
+
+var logoutLoose = 0;
+//OFFLINE SCORES
+var userVitorys = 0;
+var userGames = 0;
+document.getElementById("offlineScores").addEventListener("click",function getScores(){
+  orderScores();
+  //open scores
+  var modal = document.getElementById("pcScores");
+  modal.style.display = "block";
+  var tableOff = document.getElementById("offlineInfo");
+  //remove table info
+  while(tableOff.firstChild)
+    tableOff.removeChild(tableOff.firstChild);
+  //fill header
+  var thM = document.createElement("tr");
+  var nameM = document.createElement("th");
+  var vicM = document.createElement("th");
+  var gamM = document.createElement("th");
+
+  nameM.innerHTML = "Username";
+  vicM.innerHTML = "Victorys";
+  gamM.innerHTML = "Games";
+  thM.appendChild(nameM);
+  thM.appendChild(vicM);
+  thM.appendChild(gamM);
+  tableOff.appendChild(thM);
+  //fill with local info
+  if (typeof(Storage) !== "undefined") {
+    var wins;
+    var ngames;
+    for(var i=0; i<topScores.length; i++){
+      if(i==10)
+        break;
+      var trPlayer = document.createElement("tr");
+      var namePlayer = document.createElement("th");
+      var vicPlayer = document.createElement("th");
+      var gamPlayer = document.createElement("th");
+      namePlayer.innerHTML = topScores[i].user;
+      vicPlayer.innerHTML = topScores[i].wins;
+      gamPlayer.innerHTML = topScores[i].ngames;
+      trPlayer.appendChild(namePlayer);
+      trPlayer.appendChild(vicPlayer);
+      trPlayer.appendChild(gamPlayer);
+      tableOff.appendChild(trPlayer);
+    }
+  }
+  else {
+    console.log("No web storage Support.");
+  }
+  //localStorage(nick,win,games)
+
+});
+
+document.getElementsByClassName("close")[2].addEventListener("click",function(){
+  document.getElementById("pcScores").style.display = "none";
+});
+//ALGORITHM TO ORDER SCORES
+var topScores = [];
+function orderScores(){
+  if(typeof(Storage)!== "undefined"){
+    var t = 0;
+    for(var key in localStorage){
+      if(key !== "key" && key !== "getItem" && key !== "setItem" && key !== "removeItem" && key !== "clear" && key !== "length"){
+        topScores[t] = JSON.parse(localStorage[key]);
+        t++;
+      }
+    }
+    for(var i=0; i<topScores.length; i++){
+      for(var j=i+1; j<topScores.length; j++){
+        if(Number(topScores[j].wins)>Number(topScores[i].wins)){
+          var tempS = topScores[i];
+          topScores[i] = topScores[j];
+          topScores[j] = tempS;
+        }
+        if(Number(topScores[j].wins)==Number(topScores[i].wins)){
+          if(Number(topScores[j].ngames)<Number(topScores[i].ngames)){
+            var tempS = topScores[i];
+            topScores[i] = topScores[j];
+            topScores[j] = tempS;
+          }
+        }
+      }
+    }
+  }
+  else{
+    console.log("No web storage Support.");
+  }
+}
+
+function orderArray(arr){
+
+}
+//--------------
 
 var giveUp = document.getElementById("forfeit");
 var menu = document.getElementById("playMenu");
@@ -139,7 +230,6 @@ document.getElementById("PlayerHand").innerHTML="";
 document.getElementById("Deck").innerHTML="";
 
   reset();
-  console.log(mypieces);
   l=-1,r=-1;
   max=0;
   pos=-1;
@@ -243,6 +333,63 @@ function reset(){
   }
 }
 function PCWin(){
+  //update localStorage
+  if (typeof(Storage) !== "undefined") {
+    var wins;
+    var ngames;
+    if(localStorage.getItem(userValue)!== null){
+      var temp = JSON.parse(localStorage.getItem(userValue));
+      wins = Number(temp.wins);
+      ngames = Number(temp.ngames);
+      wins = wins;
+      ngames = ngames+1;
+      const status = {
+        user: userValue,
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem(userValue,JSON.stringify(status));
+    }
+    else{
+      wins = 0;
+      ngames = 1;
+      const status = {
+        user: userValue,
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem(userValue,JSON.stringify(status));
+    }
+
+    if(localStorage.getItem("Computer")!==null){
+      var temp = JSON.parse(localStorage.getItem("Computer"));
+      wins = Number(temp.wins);
+      ngames = Number(temp.ngames);
+      wins = wins+1;
+      ngames = ngames+1;
+      const status = {
+        user: "Computer",
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem("Computer",JSON.stringify(status));
+    }
+    else{
+      wins = 1;
+      ngames = 1;
+      const status = {
+        user: "Computer",
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem("Computer",JSON.stringify(status));
+    }
+
+  }
+  else {
+    console.log("No web storage Support.");
+  }
+  //-------------------
   window.alert("PC WIN!");
   giveUp.style.display = "none";
   menu.style.display = "block";
@@ -251,6 +398,62 @@ function PCWin(){
   left.style.display = "block";
 }
 function PlayerWin(){
+  //update localStorage
+  if (typeof(Storage) !== "undefined") {
+    var wins;
+    var ngames;
+    if(localStorage.getItem(userValue)!== null){
+      var temp = JSON.parse(localStorage.getItem(userValue));
+      wins = Number(temp.wins);
+      ngames = Number(temp.ngames);
+      wins = wins+1;
+      ngames = ngames+1;
+      const status = {
+        user: userValue,
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem(userValue,JSON.stringify(status));
+    }
+    else{
+      wins = 1;
+      ngames = 1;
+      const status = {
+        user: userValue,
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem(userValue,JSON.stringify(status));
+    }
+
+    if(localStorage.getItem("Computer")!==null){
+      var temp = JSON.parse(localStorage.getItem("Computer"));
+      wins = Number(temp.wins);
+      ngames = Number(temp.ngames);
+      ngames = ngames+1;
+      const status = {
+        user: "Computer",
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem("Computer",JSON.stringify(status));
+    }
+    else{
+      wins = 0;
+      ngames = 1;
+      const status = {
+        user: "Computer",
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem("Computer",JSON.stringify(status));
+    }
+
+  }
+  else {
+    console.log("No web storage Support.");
+  }
+  //-------------------
   window.alert("PLAYER WIN!");
   giveUp.style.display = "none";
   menu.style.display = "block";
@@ -259,6 +462,62 @@ function PlayerWin(){
   left.style.display = "block";
 }
 function Draw(){
+  //update localStorage
+  if (typeof(Storage) !== "undefined") {
+    var wins;
+    var ngames;
+    if(localStorage.getItem(userValue)!== null){
+      var temp = JSON.parse(localStorage.getItem(userValue));
+      wins = Number(temp.wins);
+      ngames = Number(temp.ngames);
+      wins = wins;
+      ngames = ngames+1;
+      const status = {
+        user: userValue,
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem(userValue,JSON.stringify(status));
+    }
+    else{
+      wins = 0;
+      ngames = 1;
+      const status = {
+        user: userValue,
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem(userValue,JSON.stringify(status));
+    }
+
+    if(localStorage.getItem("Computer")!==null){
+      var temp = JSON.parse(localStorage.getItem("Computer"));
+      wins = Number(temp.wins);
+      ngames = Number(temp.ngames);
+      ngames = ngames+1;
+      const status = {
+        user: "Computer",
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem("Computer",JSON.stringify(status));
+    }
+    else{
+      wins = 0;
+      ngames = 1;
+      const status = {
+        user: "Computer",
+        wins: wins,
+        ngames: ngames
+      }
+      localStorage.setItem("Computer",JSON.stringify(status));
+    }
+
+  }
+  else {
+    console.log("No web storage Support.");
+  }
+  //-------------------
   window.alert("DRAW!");
   giveUp.style.display = "none";
   menu.style.display = "block";
@@ -266,52 +525,24 @@ function Draw(){
   board2.style.display = "none";
   left.style.display = "block";
 }
-//ver pontos na mao do pc
-function pointsPC(){
-  let points = 0;
-  for(var i=0; i<hispieces.length; i++){
-    points+= hispieces[i].left+hispieces[i].right;
-  }
-  return points;
-}
-//ver pontos na mao do player
-function pointsPlayer(){
-  let points = 0;
-  for(var i=0; i<mypieces.length; i++){
-    points+= mypieces[i].left+mypieces[i].right;
-  }
-  return points;
-}
+
 //turno do pc
 function PCturn(){
 	if(mypieces.length==0){
-    userPoints += pointsPC();
-    userVitorys ++;
 		setTimeout(PlayerWin,500);
 		return;
 	}
   else if(array.length==0 && (check(hispieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1 && check(mypieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1)){
-    if(pointsPlayer()>pointsPC()){
-      userPoints += pointsPC();
-      userVitorys ++;
+    if(mypieces.length<hispieces.length){
       setTimeout(PlayerWin,500);
     }
-    else if(pointsPlayer()<pointsPC()){
+    else if(mypieces.length>hispieces.length){
       setTimeout(PCWin,1000);
     }
     else{
-      if(mypieces.length<hispieces.length){
-        userPoints += pointsPC();
-        userVitorys ++;
-        setTimeout(PlayerWin,500);
-      }
-      else if(mypieces.length>hispieces.length){
-        setTimeout(PCWin,1000);
-      }
-      else{
-        setTimeout(Draw,500);
-      }
+      setTimeout(Draw,500);
     }
+
     return;
   }
 	if(check(hispieces,tabu[0].left,tabu[tabu.length-1].right).pos===-1){
