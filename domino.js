@@ -1,3 +1,11 @@
+document.getElementById("waiting").addEventListener("click",function (){
+  document.getElementById("funSnake").style.display = "block";
+});
+
+document.getElementById("closefun").addEventListener("click",function (){
+  document.getElementById("funSnake").style.display = "none";
+});
+
 //Function to present a modal box with the rules
 document.getElementById("buttonRules").addEventListener("click",function rulesButton(){
   // Get the modal
@@ -8,20 +16,20 @@ document.getElementById("buttonRules").addEventListener("click",function rulesBu
 });
 
 //Function to close modal Rules
-document.getElementsByClassName("close")[0].addEventListener("click", function() {
+document.getElementById("closeRules").addEventListener("click", function() {
   document.getElementById("myModal").style.display = "none";
 });
 
 //Function to present a modal box with the scores
 document.getElementById("scores").addEventListener("click",function scoresButton(){
-  getRanking();
+  getRanking(); //funcao do servidor dos rankings
   // Get the modal
   var modal = document.getElementById("myScores");
 
   modal.style.display = "block";
 });
 
-document.getElementsByClassName("close")[1].addEventListener("click",function(){
+document.getElementById("closeOff").addEventListener("click",function(){
   document.getElementById("myScores").style.display = "none";
 });
 

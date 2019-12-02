@@ -11,15 +11,13 @@
 <body>
   <!-- Título -->
   <div class="center">
-    <h1> Domino Game</h1>
+    <h1>Domino Game</h1>
   </div>
 
   <div id = "logout" >
     <button id="buttonLogout" >Logout</button>
     <p id = "userLogout"> </p>
-  </div>
-
-  <div id = "loginContainer">
+  </div>  <div id = "loginContainer">
     <form name = "login" method = "post">
       <pre class = "loginText">Username:<input type = "text" name = "username" class = "textBoxes" id="user"/></pre>
       <pre class = "loginText">Password:<input type = "password" name = "password" class = "textBoxes" id = "pass"/></pre>
@@ -50,6 +48,7 @@
   </div>
 
   <div id="leftContainer">
+
     <div id = "playMenu">
         <button id="button1x1">1 vs 1</button>
         <button id="button1xpc">1 vs PC</button>
@@ -57,11 +56,20 @@
   </div>
   <!-- Right Box -->
   <div id="rightContainer">
+    <button id = "waiting"> FUN </button>
+    <div id = "funSnake" class = "modal">
+      <div class="modal-content">
+        <span id="closefun" class="close"> &times; </span>
+        <canvas id="canvas"></canvas>
+        <p class = "centerModal">Have some fun!</p>
+      </div>
+    </div>
+    <!-- Rules -->
     <button id="buttonRules" >Rules</button>
     <div id="myModal" class = "modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <span class="close">&times;</span>
+        <span id ="closeRules" class="close">&times;</span>
         <p id = "rulesTitle" class = "centerModal">Rules</p>
         <pre class = "rulesText">
           Durante o jogo os jogadores jogam alternadamente.
@@ -87,7 +95,7 @@
     <div id="myScores" class = "modal">
       <!-- Modal content -->
       <div class="modal-content">
-        <span class="close" >&times;</span>
+        <span id="closeOff" class="close" >&times;</span>
         <p class = "centerModal">HighScores</p>
         <div id = "scoreTable">
           <table id ="tableinfo">
@@ -99,7 +107,7 @@
     <button id ="offlineScores" > Offline Scores </button>
     <div id = "pcScores" class = "modal">
       <div class="modal-content">
-        <span class="close"> &times; </span>
+        <span id ="closeScoreOff" class="close"> &times; </span>
         <p class = "centerModal"> HighScores </p>
         <div id="offlineTable">
           <table id="offlineInfo">
@@ -120,6 +128,7 @@
     </script>
 
   </div>
+  <script src = "canvas.js"> </script>
   <script src = "domino.js"> </script>
 </body>
 </html>

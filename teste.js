@@ -44,21 +44,24 @@ document.getElementById("loginButton").addEventListener("click",function getUser
   var user = document.getElementById("user");
   userValue = user.value;
   pcMode = 0;
-  logoutLoose = 0;
 });
 
 document.getElementById("giveUp").addEventListener("click",function(){
   if(pcMode!==0){
-    setTimeout(PCWin,500);
+    PCWin();
     pcMode = 0;
   }
 });
 
-document.getElementById("button1xpc").addEventListener("click",function(){
+document.getElementById("startGame").addEventListener("click",function(){
   pcMode=1;
 });
 
-var logoutLoose = 0;
+document.getElementById("buttonLogout").addEventListener("click",function(){
+  if(pcMode !== 0){
+    PCWin();
+  }
+});
 //OFFLINE SCORES
 var userVitorys = 0;
 var userGames = 0;
@@ -111,7 +114,7 @@ document.getElementById("offlineScores").addEventListener("click",function getSc
 
 });
 
-document.getElementsByClassName("close")[2].addEventListener("click",function(){
+document.getElementById("closeScoreOff").addEventListener("click",function(){
   document.getElementById("pcScores").style.display = "none";
 });
 //ALGORITHM TO ORDER SCORES

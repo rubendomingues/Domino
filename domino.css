@@ -2,11 +2,32 @@
 body{
   background-image:url("https://cdn6.f-cdn.com/contestentries/1370548/19120511/5b4d43f5c58ce_thumb900.jpg");
 }
-
+.pieceLogo{
+  height: 40px;
+  width: 40px;
+}
 .centerModal{
   text-align: center;
   font-weight: bold;
   font-size: 25px;
+}
+
+#canvas{
+  margin-left: 35%;
+  width: 400px;
+  height: 200px;
+}
+#waiting{
+  background-color: Transparent;
+  border: none;
+  color: white;
+  height: 50px;
+  width: 110px;
+  display: inline-block;
+  justify-content: center;
+  align-content: center;
+  font-size: 24px;
+  cursor: pointer;
 }
 /* Align text to the center */
 .center{
