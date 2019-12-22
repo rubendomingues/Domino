@@ -12,6 +12,11 @@ body{
   font-size: 25px;
 }
 
+#canvasClock{
+  width: 80px;
+  height: 40px;
+  visibility: hidden;
+}
 #canvas{
   margin-left: 35%;
   width: 400px;
@@ -218,7 +223,7 @@ body{
   font-size: 400%;
   display:block;
   text-align: center;
-  margin-top:10%;
+  margin-top:8%;
   color:white;
   white-space: nowrap;
 }
@@ -232,7 +237,7 @@ body{
 }
 /* div dos botoes esq / dir */
 #PiecePos{
-    margin-top: 10%;
+    margin-top: 7%;
     visibility: visible;
 }
 
@@ -273,7 +278,7 @@ body{
   border: none;
   font-size:32px;
   cursor: pointer;
-  margin-top: 25%;
+  margin-top: 22%;
   margin-left: 15%;
 }
 /* mao do pc */

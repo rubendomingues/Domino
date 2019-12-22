@@ -1,8 +1,8 @@
 
-var canvas, ctx;
+var canvas2, ctx2;
      window.onload = function() {
-        canvas = document.getElementById("canvas");
-        ctx = canvas.getContext("2d");
+        canvas2 = document.getElementById("canvas");
+        ctx2 = canvas2.getContext("2d");
         document.addEventListener("keydown", keyDownEvent);
         setInterval(draw, 100);//speed
     }
@@ -27,9 +27,9 @@ var canvas, ctx;
         if (Y > grid - 1) {
           Y = 0;
         }
-        ctx.fillStyle = "black";
+        ctx2.fillStyle = "black";
 		for (var i = 0; i < road.length; i++) {//painting the square
-		  ctx.fillRect(
+		  ctx2.fillRect(
 		    road[i].x * Size,
 		    road[i].y * Size,
 		    Size,

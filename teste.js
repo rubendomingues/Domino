@@ -113,7 +113,6 @@ document.getElementById("offlineScores").addEventListener("click",function getSc
   //localStorage(nick,win,games)
 
 });
-
 document.getElementById("closeScoreOff").addEventListener("click",function(){
   document.getElementById("pcScores").style.display = "none";
 });
@@ -150,9 +149,6 @@ function orderScores(){
   }
 }
 
-function orderArray(arr){
-
-}
 //--------------
 
 var giveUp = document.getElementById("forfeit");

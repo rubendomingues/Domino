@@ -345,7 +345,6 @@ function notifyAskPiece(){
 //NOTIFY SERVER TO PLAY
 function notifyServerPlay(piece,side){
   countu=0;
-
   game = {
     nick : username,
     pass : password,
@@ -374,7 +373,6 @@ function notifyServerPlay(piece,side){
 function notifyServerSkip(){
   //DRAWAPAGAR ( APAGAR CASO DUARTE NAO CONSIGA)
   countu++;
-
   //----------------------------------------------
   game = {
     nick : username,
@@ -426,6 +424,14 @@ function update(){
         return;
       }
       else{
+        if(data.turn === username)
+          document.getElementById("canvasClock").style.visibility = "visible";
+        else
+          document.getElementById("canvasClock").style.visibility = "hidden";
+
+        if(data.turn !== turn){
+          resetClock();
+        }
         if(data.board.line.length===0 && data.turn===username && mypieces.length!==0){
           var filhos=playerH.childNodes;
           pos=-1;
