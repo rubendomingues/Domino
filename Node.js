@@ -44,7 +44,7 @@ const server = http.createServer(function (request, response) {
         .on('end', () => {
           try{
             query = JSON.parse(body);
-            methodPost(pathname,request,query;
+            methodPost(pathname,request,query);
           }
           catch(err){
             console.log(err);
@@ -67,7 +67,7 @@ server.listen(port);
 function methodPost(pathname,request,response){
   switch(pathname){
     case "/register":
-
+      registerServer(query.nick,query.pass);
       break;
 
     case "/join":
@@ -85,5 +85,28 @@ function methodPost(pathname,request,response){
     case "/ranking":
 
       break;
+  }
+}
+
+function registerServer(name,pass){
+  for(let conta in accounts){
+    if(conta.nick === name && conta.pass === pass){
+      let answer = JSON.stringify("");
+      return answer;
+    }
+    else if(conta.nick === name && conta.pass !== pass){
+      let answer = JSON.stringify("Wrong Password");
+      return answer;
+    }
+    else{
+      let answer = JSON.stringify("");
+      const conta = {
+        nick : name,
+        pass : pass
+      };
+      accounts.push(JSON.parse(conta));
+      registerAccount(conta);
+      return answer;
+    }
   }
 }
