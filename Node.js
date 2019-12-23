@@ -67,81 +67,85 @@ function registerAccount(data){
   });
 }
 
-//Create server connection
-const server = http.createServer(function (request, response) {
-  const parsedLink = link.parse(request.url,true);
-  const query = parsedLink.query;
-  switch(request.method){
-    case 'POST':
-        request.on('data', (chunk) => {
-          body+=chunk;
-        })
-        .on('end', () => {
-          try{
-            query = JSON.parse(body);
-            methodPost(pathname,request,query);
-          }
-          catch(err){
-            console.log(err);
-          }
-        })
-        .on('error', (err) => {
-          console.log(err.message);
-        });
-      break;
-
-    case 'GET':
-      //*FINISH UPDATE*
-      break;
-  }
-
-});
-
-server.listen(port);
-
-function methodPost(pathname,request,response){
-  switch(pathname){
-    case "/register":
-      registerServer(query.nick,query.pass);
-      break;
-
-    case "/join":
-
-      break;
-
-    case "/leave":
-
-      break;
-
-    case "/notify":
-
-      break;
-
-    case "/ranking":
-
-      break;
-  }
-}
-
+// //Create server connection
+// const server = http.createServer(function (request, response) {
+//   const parsedLink = link.parse(request.url,true);
+//   const query = parsedLink.query;
+//   switch(request.method){
+//     case 'POST':
+//         request.on('data', (chunk) => {
+//           body+=chunk;
+//         })
+//         .on('end', () => {
+//           try{
+//             query = JSON.parse(body);
+//             methodPost(pathname,request,query);
+//           }
+//           catch(err){
+//             console.log(err);
+//           }
+//         })
+//         .on('error', (err) => {
+//           console.log(err.message);
+//         });
+//       break;
+//
+//     case 'GET':
+//       //*FINISH UPDATE*
+//       break;
+//   }
+//
+// });
+//
+// server.listen(port);
+//
+// function methodPost(pathname,request,response){
+//   switch(pathname){
+//     case "/register":
+//       registerServer(query.nick,query.pass);
+//       break;
+//
+//     case "/join":
+//
+//       break;
+//
+//     case "/leave":
+//
+//       break;
+//
+//     case "/notify":
+//
+//       break;
+//
+//     case "/ranking":
+//
+//       break;
+//   }
+// }
+readFile();
+registerServer("ruben","123");
 function registerServer(name,pass){
-  for(let conta in accounts){
-    if(conta.nick === name && conta.pass === pass){
+  let notRegistred = 1 ;
+  for(let i=0; i<accounts.length; i++){
+    if(accounts[i].nick === name && accounts[i].pass === pass){
+      notRegistred = 0;
       let answer = JSON.stringify("");
-      return answer;
+      //return answer;
     }
-    else if(conta.nick === name && conta.pass !== pass){
+    else if(accounts[i].nick === name && accounts[i].pass !== pass){
+      notRegistred = 0;
       let answer = JSON.stringify("Wrong Password");
-      return answer;
+      //return answer;
     }
-    else{
-      let answer = JSON.stringify("");
-      const conta = {
-        nick : name,
-        pass : pass
-      };
-      accounts.push(JSON.parse(conta));
-      registerAccount(conta);
-      return answer;
-    }
+  }
+  if(notRegistred === 1){
+    let answer = JSON.stringify("");
+    const conta = {
+      nick : name,
+      pass : pass
+    };
+    // accounts.push(JSON.parse(conta));
+    // registerAccount(conta);
+    //return answer;
   }
 }
