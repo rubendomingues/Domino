@@ -5,30 +5,65 @@ let port = 8149;
 let accounts = [];
 let rankings = [];
 
-//Store all the accounts registred at the moment
-require('fs').readFile("accounts.json", (err, data) => {
-  if(err) throw err;
-  let parsedData = JSON.stringify(data).split("\n");
-  for(let i=0; i<parsedData.length; i++){
-    accounts.push(JSON.parse(parsedData[i]));
-  }
-});
+let file = require('fs');
 
-//Register new account
-function registerAccount(data){
-  require('fs').writeFile("accounts.json", JSON.stringify(data), (err) => {
-    if(err) throw err;
-  });
+//Store all the accounts registred at the moment
+function readFile(){
+  let data = file.readFileSync("accounts.json");
+  let parsedData = JSON.parse(data);
+  parsedData = JSON.stringify(parsedData);
+  let tempData = "";
+  //Parse the info
+  for(let i=0; i < parsedData.length; i++){
+    if(parsedData[i] === '[' || parsedData[i] === ']'){
+      continue;
+    }
+    if(parsedData[i] === '}'){
+      tempData = tempData.concat(parsedData[i]);
+      tempData = tempData.concat("\n");
+      i++;
+      continue;
+    }
+    tempData = tempData.concat(parsedData[i]);
+  }
+  //Store the info
+  let finalData = tempData.split("\n");
+  for(let i = 0; i< finalData.length-1; i++){
+    accounts.push(JSON.parse(finalData[i]));
+  }
 }
 
 //Store all the rankings
 function readRankings(){
-  require('fs').readFile("rankings.json", (err,data) => {
-    if(err) throw err;
-    let parsedData = data.split("\n");
-    for(let i=0; i<parsedData.length; i++){
-      rankings.push(JSON.parse(parsedData[i]));
+  let data = file.readFileSync("rankings.json");
+  let parsedData = JSON.parse(data);
+  parsedData = JSON.stringify(parsedData);
+  let tempData = "";
+  //Parse the info
+  for(let i=0; i < parsedData.length; i++){
+    if(parsedData[i] === '[' || parsedData[i] === ']'){
+      continue;
     }
+    if(parsedData[i] === '}'){
+      tempData = tempData.concat(parsedData[i]);
+      tempData = tempData.concat("\n");
+      i++;
+      continue;
+    }
+    tempData = tempData.concat(parsedData[i]);
+  }
+  //Store the info
+  let finalData = tempData.split("\n");
+  for(let i = 0; i< finalData.length-1; i++){
+    rankings.push(JSON.parse(finalData[i]));
+  }
+}
+
+//Register new account
+function registerAccount(data){
+  accounts.push(data);
+  file.writeFile("./accounts.json", JSON.stringify(accounts), (err) => {
+    if(err) throw err;
   });
 }
 
@@ -39,7 +74,7 @@ const server = http.createServer(function (request, response) {
   switch(request.method){
     case 'POST':
         request.on('data', (chunk) => {
-          body+=cunk;
+          body+=chunk;
         })
         .on('end', () => {
           try{
