@@ -1,15 +1,35 @@
 const http = require('http');
 const link = require('url');
+let file = require('fs');
 let port = 8149;
+
+//Headers
+const headers = {
+    plain: {
+        'Content-Type': 'application/javascript',
+        'Cache-Control': 'no-cache',
+        'Access-Control-Allow-Origin': '*'
+    },
+    sse: {
+        'Content-Type': 'text/event-stream',
+        'Cache-Control': 'no-cache',
+        'Access-Control-Allow-Origin': '*',
+        'Connection': 'keep-alive'
+    }
+};
 
 let accounts = [];
 let rankings = [];
 
-let file = require('fs');
-
+if(!file.existsSync("accounts.json")) {
+  let myObject = new ActiveXObject("Scripting.FileSystemObject");
+  let newfile = myObject.CreateTextFile("accounts.json", false);
+}
 //Store all the accounts registred at the moment
 function readFile(){
   let data = file.readFileSync("accounts.json");
+  if(data.length === 0)
+    return;
   let parsedData = JSON.parse(data);
   parsedData = JSON.stringify(parsedData);
   let tempData = "";
@@ -62,15 +82,17 @@ function readRankings(){
 //Register new account
 function registerAccount(data){
   accounts.push(data);
-  file.writeFile("./accounts.json", JSON.stringify(accounts), (err) => {
-    if(err) throw err;
-  });
+  file.writeFileSync("./accounts.json", JSON.stringify(accounts));;
 }
+
+readFile();
 
 // //Create server connection
 // const server = http.createServer(function (request, response) {
 //   const parsedLink = link.parse(request.url,true);
-//   const query = parsedLink.query;
+//   let pathname = parsedLink.pathname;
+//   let body = "";
+//
 //   switch(request.method){
 //     case 'POST':
 //         request.on('data', (chunk) => {
@@ -78,8 +100,8 @@ function registerAccount(data){
 //         })
 //         .on('end', () => {
 //           try{
-//             query = JSON.parse(body);
-//             methodPost(pathname,request,query);
+//             let query = JSON.parse(body);
+//             methodPost(pathname,request,query,response);
 //           }
 //           catch(err){
 //             console.log(err);
@@ -99,18 +121,18 @@ function registerAccount(data){
 //
 // server.listen(port);
 //
-// function methodPost(pathname,request,response){
+// function methodPost(pathname,request,query,response){
 //   switch(pathname){
 //     case "/register":
-//       registerServer(query.nick,query.pass);
+//       registerServer(query.nick,query.pass,response);
 //       break;
 //
 //     case "/join":
-//
+//       joinGameServer(query.group,query.nick,query.pass)
 //       break;
 //
 //     case "/leave":
-//
+//       leaveGameServer(query.game,query.nick,query.pass);
 //       break;
 //
 //     case "/notify":
@@ -118,24 +140,34 @@ function registerAccount(data){
 //       break;
 //
 //     case "/ranking":
-//
+//       rankingServer();
 //       break;
 //   }
 // }
-readFile();
-registerServer("ruben","123");
-function registerServer(name,pass){
+
+function registerServer(name,pass,response){
   let notRegistred = 1 ;
+  if(name === "" || pass === ""){
+    let answer = JSON.stringify("ERROR: User and Password can't be empty");
+    // response.writeHead(400,headers.plain);
+    // response.write(answer);
+    // response.end();
+    return;
+  }
   for(let i=0; i<accounts.length; i++){
     if(accounts[i].nick === name && accounts[i].pass === pass){
       notRegistred = 0;
       let answer = JSON.stringify("");
-      //return answer;
+      // response.writeHead(200,headers.plain);
+      // response.write(answer);
+      // response.end();
     }
     else if(accounts[i].nick === name && accounts[i].pass !== pass){
       notRegistred = 0;
-      let answer = JSON.stringify("Wrong Password");
-      //return answer;
+      let answer = JSON.stringify("Error: Wrong User or Password");
+      // response.writeHead(400,headers.plain);
+      // response.write(answer);
+      // response.end();
     }
   }
   if(notRegistred === 1){
@@ -144,8 +176,10 @@ function registerServer(name,pass){
       nick : name,
       pass : pass
     };
-    // accounts.push(JSON.parse(conta));
-    // registerAccount(conta);
-    //return answer;
+    accounts.push(JSON.parse(conta));
+    registerAccount(conta);
+    // response.writeHead(200,headers.plain);
+    // response.write(answer);
+    // response.end();
   }
 }
