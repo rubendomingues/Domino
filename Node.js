@@ -106,7 +106,7 @@ function methodPost(pathname,request,query,response){
 function registerServer(name,pass,response){
   let notRegistred = 1 ;
   if(name === "" || pass === ""){
-    let answer = JSON.stringify("ERROR: User and Password can't be empty");
+    let answer = JSON.stringify({error: "User and Password can't be empty"});
     response.writeHead(400,headers.plain);
     response.write(answer);
     response.end();
@@ -115,28 +115,29 @@ function registerServer(name,pass,response){
   for(let i=0; i<accounts.length; i++){
     if(accounts[i].nick === name && accounts[i].pass === pass){
       notRegistred = 0;
-      let answer = JSON.stringify("");
+      let answer = JSON.stringify({});
       response.writeHead(200,headers.plain);
       response.write(answer);
       response.end();
+      break;
     }
     else if(accounts[i].nick === name && accounts[i].pass !== pass){
       notRegistred = 0;
-      let answer = JSON.stringify("Error: Wrong User or Password");
+      let answer = JSON.stringify({error: "Wrong User or Password"});
       response.writeHead(400,headers.plain);
       response.write(answer);
       response.end();
+      break;
     }
   }
   if(notRegistred === 1){
-    let answer = JSON.stringify("");
+    let answer = JSON.stringify({});
     const conta = {
       nick : name,
       pass : pass,
       games : 0,
       wins : 0
     };
-    accounts.push(JSON.parse(conta));
     registerAccount(conta);
     response.writeHead(200,headers.plain);
     response.write(answer);
