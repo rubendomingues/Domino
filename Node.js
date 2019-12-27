@@ -118,8 +118,10 @@ function rankingServer(response){
     ranks[i].games = accounts[i].games;
     ranks[i].victories = accounts[i].victories;
   }
+
+  ranks = {ranking: ranks};
   response.writeHead(200,headers.plain);
-  response.write(JSON.stringify({ranking:ranks}));
+  response.write(JSON.stringify(ranks));
   response.end();
 
 }
