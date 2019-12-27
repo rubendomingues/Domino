@@ -98,9 +98,30 @@ function methodPost(pathname,request,query,response){
       break;
 
     case "/ranking":
-      rankingServer();
+      rankingServer(response);
       break;
   }
+}
+
+function rankingServer(response){
+  let ranks = [];
+
+  let conta = {
+    nick : "",
+    games : 0,
+    victories: 0
+  };
+
+  ranks.push(conta);
+  for(let i=0; i<accounts.length; i++){
+    ranks[i].nick = accounts[i].nick;
+    ranks[i].games = accounts[i].games;
+    ranks[i].victories = accounts[i].victories;
+  }
+  response.writeHead(200,headers.plain);
+  response.write(JSON.stringify({ranking:ranks}));
+  response.end();
+
 }
 
 function registerServer(name,pass,response){
@@ -136,7 +157,7 @@ function registerServer(name,pass,response){
       nick : name,
       pass : pass,
       games : 0,
-      wins : 0
+      victories : 0
     };
     registerAccount(conta);
     response.writeHead(200,headers.plain);
