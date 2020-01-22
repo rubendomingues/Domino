@@ -84,17 +84,19 @@ document.getElementById("buttonLogout").addEventListener("click",function logout
   document.getElementById("pass").value = "";
   document.getElementById("left").style.visibility = "hidden";
   document.getElementById("right").style.visibility = "hidden";
-  leaveGame();
+  if(inGame == 1)
+    leaveGame();
+  inGame =0;
 });
 
 document.getElementById("loginButton").addEventListener("click",function loginFunc(){
   var user = document.getElementById("user");
   var pass = document.getElementById("pass");
-  if(user.value=="" || pass.value=="")
-    window.alert("Insert username and password before login!");
-  else{
+  // if(user.value=="" || pass.value=="")
+  //   window.alert("Insert username and password before login!");
+  // else{
     loginServer();
-  }
+  // }
   flag2=0;
 });
 
@@ -135,7 +137,9 @@ document.getElementById("giveUp").addEventListener("click",function giveGame(){
   document.getElementById("left").style.visibility = "hidden";
   document.getElementById("right").style.visibility = "hidden";
   leaveGame();
+  inGame = 0;
 });
+var joinError = 0;
 
 document.getElementById("button1x1").addEventListener("click", function playerGame() {
   flag2=0;
@@ -148,7 +152,6 @@ document.getElementById("button1x1").addEventListener("click", function playerGa
   dif.style.display = "none";
   left.style.display = "none";
   gameBoard.style.display = "block";
-
   joinGame();
 });
 
@@ -162,7 +165,6 @@ function displayGame(){
 }
 
 function fillScores(info){
-
   info = info.ranking;
   var scoreT = document.getElementById("tableinfo");
 
@@ -201,16 +203,16 @@ function fillScores(info){
   }
 }
 //SERVER CONNECTION
-var url ='http://twserver.alunos.dcc.fc.up.pt:8008/';
+var url ='http://twserver.alunos.dcc.fc.up.pt:8149/';
+// var url = "http://localhost:8149/";
 var username = "";
 var password = "";
-var groupName = "winnersRD";
+var groupName = "30Ruben";
 var gameId = "";
 var turn;
-
+var inGame = 0;
 //LOGIN
 function loginServer(){
-
   var user = document.getElementById("user").value;
   var pass = document.getElementById("pass").value;
   username = user;
@@ -227,8 +229,8 @@ function loginServer(){
     return r.text();
   })
   .then(function (t){
-    if(t != "{}"){
-      window.alert(t);
+    if(t !== "{}"){
+      window.alert(JSON.parse(t).error);
     }
     else{
       document.getElementById("userLogout").innerHTML = "Welcome, " + user;
@@ -259,6 +261,18 @@ function joinGame(){
     return r.json();
   })
   .then(function (t){
+    if(t.error === "Already in this room"){
+      leaveGame();
+      joinGame();
+      return;
+    }
+    else if(t.error){
+      window.alert(t.error);
+      leaveGame();
+      eventDisap();
+      return;
+    }
+    joinError = 0;
     gameId = t.game;
     if(t.hand == null){
       leaveGame();
@@ -268,6 +282,7 @@ function joinGame(){
     atualizaHand(t.hand);
     displayGame();
     startGame();
+    inGame = 1;
   })
   .catch(function (error){
     console.log(error);
@@ -291,6 +306,7 @@ function leaveGame(){
     return r.text();
   })
   .then(function (t){
+    inGame = 0;
     return t;
   })
   .catch(function (error){
@@ -414,7 +430,10 @@ function update(){
       const data = JSON.parse(event.data);
       if(data.winner !== undefined){
         document.getElementById("warnings").innerHTML = "";
-        window.alert(data.winner + " win");
+        if(data.winner === "draw")
+          window.alert("Draw");
+        else
+          window.alert(data.winner + " win");
         if(data.winner===username && flag2===0)
           eventDisap();
         else if(data.winner !== username && flag2 ===0)
@@ -434,7 +453,7 @@ function update(){
         }
         if(data.board.line.length===0 && data.turn===username && mypieces.length!==0){
           var filhos=playerH.childNodes;
-          pos=-1;
+          pos=0
           maxpiece=0;
           mypieces.forEach(myFunction);
           var a=[mypieces[pos].left,mypieces[pos].right];
@@ -459,19 +478,7 @@ function update(){
       }
       else if(data !== undefined && data.board !== undefined){
         //DRAWAPAGAR ( APAGAR CASO DUARTE NAO CONSIGA)
-        if(data.turn===username){
-          if(tabu.length===data.board.line.length){
-            countu++;
-            if(countu===2){
-              window.alert("DRAW!");
-              leaveGame();
-              eventDisap();
-              eventSource.close();
-              return;
-            }
-          }
-          else countu=0;
-        }
+
         //-------------------------------
         tabu = data.board.line;
         turn = data.turn;
@@ -483,7 +490,6 @@ function update(){
 
   }
 }
-
 //-----------------
 //PLAYER VS PLAYER ALGORITHM
 document.getElementById("onlineDeck").addEventListener("click",function(){
@@ -575,6 +581,7 @@ function updateTab(){
 }
 
 function atualizaHand(s){
+  mypieces = [];
   for(var i=0; i<s.length; i++){
     var temp = s[i];
     mypieces[i] = new Piece(temp[0],temp[1]);
@@ -682,7 +689,7 @@ document.getElementById("rightp").addEventListener("click",function playpiecepla
     }
 		else {
       sidepi=1;
-      var a = [mypieces[onclickpiece].left,mypieces[onclickpiece].right];
+      var a = [mypieces[onclickpiece].right,mypieces[onclickpiece].left];
   	  notifyServerPlay(a,"end");
     }
 	}

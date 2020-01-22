@@ -1,6 +1,6 @@
 /*  */
 body{
-  background-image:url("https://cdn6.f-cdn.com/contestentries/1370548/19120511/5b4d43f5c58ce_thumb900.jpg");
+  background-image:url("background.jpg");
 }
 .pieceLogo{
   height: 40px;
@@ -127,7 +127,7 @@ body{
 }
 /* 1x1 button */
 #button1x1 {
-  background-image: url("https://image.freepik.com/free-vector/circuit-board-background-flat-style_52683-15669.jpg");
+  background-image: url("button.jpg");
   border: none;
   border-radius: 10%;
   color: white;
@@ -142,7 +142,7 @@ body{
 
 /* 1xpc button */
 #button1xpc {
-  background-image: url("https://image.freepik.com/free-vector/circuit-board-background-flat-style_52683-15669.jpg");
+  background-image: url("button.jpg");
   border: none;
   border-radius: 10%;
   color: white;
@@ -209,7 +209,7 @@ body{
 /*tabuleiro*/
 #gameBoard{
   float:left;
-  background: url("https://images.pexels.com/photos/326311/pexels-photo-326311.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940");
+  background: url("tab.jpeg");
   border-radius: 8px;
   height: 520px;
   width: 991px;
